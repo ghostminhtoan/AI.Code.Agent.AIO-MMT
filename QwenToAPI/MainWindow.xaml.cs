@@ -16,7 +16,7 @@ using System.Net.Http;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace QwenToAPI
+namespace AI.Code.Agent.AIO_MMT
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -86,10 +86,10 @@ namespace QwenToAPI
 
                 if (QwenAPICheckBox.IsChecked == true)
                 {
-                    UpdateProgressAndStatus("Starting QwenToAPI download...", 0, 0);
+                    UpdateProgressAndStatus("Starting AI Code Agent AIO - MMT download...", 0, 0);
                     await DownloadAndInstallQwenToAPI(); // Downloads, installs, then opens link
                     completedTasks++;
-                    UpdateProgressAndStatus("QwenToAPI download and install completed.", 100, 0);
+                    UpdateProgressAndStatus("AI Code Agent AIO - MMT download and install completed.", 100, 0);
                 }
 
                 if (VSCodeCheckBox.IsChecked == true)
@@ -137,7 +137,7 @@ namespace QwenToAPI
             string filePath = System.IO.Path.Combine(downloadDirectory, fileName);
 
             // Tải file với tiến độ
-            await DownloadFileWithProgress(downloadUrl, filePath, "QwenToAPI");
+            await DownloadFileWithProgress(downloadUrl, filePath, "AI Code Agent AIO - MMT");
 
             // Cài đặt với tham số /s
             ProcessStartInfo startInfo = new ProcessStartInfo
@@ -286,8 +286,8 @@ namespace QwenToAPI
                             var speed = timeSinceLastUpdate > 0 ? bytesSinceLastUpdate / timeSinceLastUpdate / 1024 : 0; // KB/s
 
                             var progress = canReportProgress ? (double)totalBytesRead / totalBytes * 100 : 0;
-                            var progressText = canReportProgress ? 
-                                $"{fileName} download progress: {totalBytesRead / 1024} KB / {(totalBytes / 1024)} KB" : 
+                            var progressText = canReportProgress ?
+                                $"{fileName} download progress: {totalBytesRead / 1024} KB / {(totalBytes / 1024)} KB" :
                                 $"{fileName} download progress: {totalBytesRead / 1024} KB";
 
                             UpdateProgressAndStatus(progressText, progress, speed);

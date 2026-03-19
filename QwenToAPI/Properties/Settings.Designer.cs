@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace QwenToAPI.Properties
+namespace AI.Code.Agent.AIO_MMT.Properties
 {
 
 

@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace QwenToAPI
+namespace AI.Code.Agent.AIO_MMT
 {
     /// <summary>
     /// Interaction logic for App.xaml
