@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36616.10 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI.Code.Agent.AIO-MMT", "QwenToAPI\QwenToAPI.csproj", "{BB4C0CAE-AF56-4337-8087-6E308431A388}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI.Code.Agent.AIO-MMT", "AI.Code.Agent.AIO-MMT.csproj", "{BB4C0CAE-AF56-4337-8087-6E308431A388}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
