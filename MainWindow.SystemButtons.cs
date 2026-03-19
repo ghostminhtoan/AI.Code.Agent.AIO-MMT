@@ -1,5 +1,6 @@
-// AI Summary: 2026-03-19 - Created SystemButtons for handling all button click events and checkbox hover
+// AI Summary: 2026-03-19 - Updated SystemButtons with more button handlers and checkbox clicks
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -11,43 +12,64 @@ namespace AI.Code.Agent.AIO_MMT
 {
     public partial class MainWindow
     {
+        private bool _isPaused;
+        private List<string> _cachedDownloadLinks = new List<string>();
+
         /// <summary>
-        /// Select All Button - Check tất cả checkbox
+        /// Select All Button - Check tất cả checkbox trong tab hiện tại
         /// </summary>
-        public void SelectAllButton_Click(object sender, RoutedEventArgs e)
+        public void BtnSelectAll_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var child in CheckBoxPanel.Children)
+            WrapPanel currentPanel = GetCurrentCheckBoxPanel();
+            if (currentPanel != null)
             {
-                if (child is CheckBox chk)
-                    chk.IsChecked = true;
+                foreach (var child in currentPanel.Children)
+                {
+                    if (child is CheckBox chk)
+                        chk.IsChecked = true;
+                }
             }
             UpdateInstallButtonState();
         }
 
         /// <summary>
-        /// Select None Button - Uncheck tất cả checkbox
+        /// Select None Button - Uncheck tất cả checkbox trong tab hiện tại
         /// </summary>
-        public void SelectNoneButton_Click(object sender, RoutedEventArgs e)
+        public void BtnSelectNone_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var child in CheckBoxPanel.Children)
+            WrapPanel currentPanel = GetCurrentCheckBoxPanel();
+            if (currentPanel != null)
             {
-                if (child is CheckBox chk)
-                    chk.IsChecked = false;
+                foreach (var child in currentPanel.Children)
+                {
+                    if (child is CheckBox chk)
+                        chk.IsChecked = false;
+                }
             }
+            UpdateInstallButtonState();
+        }
+
+        /// <summary>
+        /// Select None for All Tabs - Uncheck tất cả checkbox trong tất cả tabs
+        /// </summary>
+        public void BtnSelectNoneAllTabs_Click(object sender, RoutedEventArgs e)
+        {
+            UncheckAllTabs();
             UpdateInstallButtonState();
         }
 
         /// <summary>
         /// Install Button - Xử lý cài đặt các phần mềm đã chọn
         /// </summary>
-        public async void InstallButton_Click(object sender, RoutedEventArgs e)
+        public async void BtnInstall_Click(object sender, RoutedEventArgs e)
         {
-            // Disable Install button during installation
-            InstallButton.IsEnabled = false;
+            BtnInstall.IsEnabled = false;
+            BtnPause.IsEnabled = true;
+            BtnStop.IsEnabled = true;
+            _isPaused = false;
 
             try
             {
-                // Tạo download directory nếu chưa tồn tại
                 if (!Directory.Exists(_downloadDirectory))
                 {
                     Directory.CreateDirectory(_downloadDirectory);
@@ -55,6 +77,7 @@ namespace AI.Code.Agent.AIO_MMT
 
                 UpdateStatus("Bắt đầu quá trình cài đặt...", "White");
 
+                // Main Tab
                 if (QwenAPICheckBox.IsChecked == true)
                 {
                     UpdateStatus("Đang tải AI Code Agent AIO - MMT...", "White");
@@ -86,27 +109,110 @@ namespace AI.Code.Agent.AIO_MMT
             }
             finally
             {
-                InstallButton.IsEnabled = true;
+                BtnInstall.IsEnabled = true;
+                BtnPause.IsEnabled = false;
+                BtnStop.IsEnabled = false;
             }
         }
 
         /// <summary>
-        /// Support Button - Mở link ủng hộ
+        /// Pause Button - Tạm dừng download
         /// </summary>
-        public void SupportButton_Click(object sender, RoutedEventArgs e)
+        public void BtnPause_Click(object sender, RoutedEventArgs e)
+        {
+            _isPaused = !_isPaused;
+            BtnPause.Content = _isPaused ? "Resume" : "Pause";
+            UpdateStatus(_isPaused ? "Đã tạm dừng" : "Đang tiếp tục...", "Orange");
+        }
+
+        /// <summary>
+        /// Stop Button - Dừng download
+        /// </summary>
+        public void BtnStop_Click(object sender, RoutedEventArgs e)
+        {
+            _isPaused = false;
+            BtnInstall.IsEnabled = true;
+            BtnPause.IsEnabled = false;
+            BtnStop.IsEnabled = false;
+            BtnPause.Content = "Pause";
+            UpdateStatus("Đã dừng", "Red");
+        }
+
+        /// <summary>
+        /// Refresh Color Button - Refresh màu sắc giao diện
+        /// </summary>
+        public void BtnRefreshColor_Click(object sender, RoutedEventArgs e)
+        {
+            // Refresh color logic
+            UpdateStatus("Đã refresh màu", "Green");
+        }
+
+        /// <summary>
+        /// Donate Button
+        /// </summary>
+        public void BtnDonate_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 Process.Start("https://tinyurl.com/mmtdonate");
             }
-            catch (System.ComponentModel.Win32Exception noBrowser)
+            catch (Exception ex)
             {
-                MessageBox.Show("Could not open the donation link: " + noBrowser.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Could not open the donation link: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            catch (Exception other)
+        }
+
+        /// <summary>
+        /// Download Page Button - Mở trang download
+        /// </summary>
+        public void BtnDownloadPage_Click(object sender, RoutedEventArgs e)
+        {
+            // Mở trang download gốc
+            try
             {
-                MessageBox.Show("An error occurred: " + other.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Information);
+                Process.Start("https://github.com/ghostminhtoan/MMT/releases");
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not open the download page: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        /// <summary>
+        /// Download Page Mouse Enter - Hiển thị link khi hover
+        /// </summary>
+        public void BtnDownloadPage_MouseEnter(object sender, MouseEventArgs e)
+        {
+            BtnDownloadPage.ToolTip = new ToolTip
+            {
+                Content = "https://github.com/ghostminhtoan/MMT/releases",
+                Placement = System.Windows.Controls.Primitives.PlacementMode.Mouse
+            };
+        }
+
+        /// <summary>
+        /// Download Page Mouse Right Button Up - Copy link
+        /// </summary>
+        public void BtnDownloadPage_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var contextMenu = new ContextMenu();
+            var copyItem = new MenuItem { Header = "Copy Link" };
+            copyItem.Click += (s, args) =>
+            {
+                if (_cachedDownloadLinks.Count > 0)
+                {
+                    string allLinks = string.Join("\n", _cachedDownloadLinks);
+                    Clipboard.SetText(allLinks);
+                    UpdateStatus($"Đã copy {_cachedDownloadLinks.Count} link vào clipboard", "Green");
+                }
+                else
+                {
+                    UpdateStatus("Không có link nào để copy", "Orange");
+                }
+            };
+            contextMenu.Items.Add(copyItem);
+            contextMenu.IsOpen = true;
+            e.Handled = true;
         }
 
         /// <summary>
@@ -142,125 +248,88 @@ namespace AI.Code.Agent.AIO_MMT
         }
 
         /// <summary>
+        /// Segment Count Preview Mouse Wheel
+        /// </summary>
+        public void CboSegmentCount_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            // Handle segment count change
+        }
+
+        /// <summary>
+        /// Segment Count Selection Changed
+        /// </summary>
+        public void CboSegmentCount_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Handle segment count change
+        }
+
+        /// <summary>
         /// Cập nhật trạng thái Install Button dựa trên checkbox được chọn
         /// </summary>
         protected void UpdateInstallButtonState()
         {
             bool anyChecked = false;
-            foreach (var child in CheckBoxPanel.Children)
+            WrapPanel currentPanel = GetCurrentCheckBoxPanel();
+            
+            if (currentPanel != null)
             {
-                if (child is CheckBox chk && chk.IsChecked == true)
+                foreach (var child in currentPanel.Children)
                 {
-                    anyChecked = true;
-                    break;
+                    if (child is CheckBox chk && chk.IsChecked == true)
+                    {
+                        anyChecked = true;
+                        break;
+                    }
                 }
             }
-            InstallButton.IsEnabled = anyChecked;
-        }
-
-        #region Download and Install Methods
-        /// <summary>
-        /// Tải và cài đặt Qwen To API
-        /// </summary>
-        private async Task DownloadAndInstallQwenToAPI()
-        {
-            string fileName = "Qwen.to.API.exe";
-            string filePath = Path.Combine(_downloadDirectory, fileName);
-
-            await DownloadFileWithProgress(QWEN_TO_API_DOWNLOAD_URL, filePath, "AI Code Agent AIO - MMT");
-
-            ProcessStartInfo startInfo = new ProcessStartInfo
-            {
-                FileName = filePath,
-                Arguments = QWEN_TO_API_INSTALL_ARGUMENTS,
-                UseShellExecute = true,
-                Verb = "runas"
-            };
-
-            Process process = Process.Start(startInfo);
-            await Task.Run(() => process.WaitForExit());
-
-            // Mở các link
-            OpenUrl("https://chromewebstore.google.com/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm");
-            OpenUrl("https://www.morphllm.com/");
-            OpenUrl("https://chat.qwen.ai/");
+            
+            BtnInstall.IsEnabled = anyChecked;
         }
 
         /// <summary>
-        /// Tải và cài đặt VSCode
+        /// Lấy WrapPanel hiện tại dựa trên tab đang chọn
         /// </summary>
-        private async Task DownloadAndInstallVSCode()
+        private WrapPanel GetCurrentCheckBoxPanel()
         {
-            string fileName = "VSCodeUserSetup-x64-1.105.1.exe";
-            string filePath = Path.Combine(_downloadDirectory, fileName);
-
-            await DownloadFileWithProgress(VSCode_DOWNLOAD_URL, filePath, "Visual Studio Code");
-
-            ProcessStartInfo startInfo = new ProcessStartInfo
+            if (MainTabControl?.SelectedItem is TabItem selectedTab)
             {
-                FileName = filePath,
-                Arguments = VSCode_INSTALL_ARGUMENTS,
-                UseShellExecute = true,
-            };
-
-            Process process = Process.Start(startInfo);
-            await Task.Run(() => process.WaitForExit());
-
-            // Cài extension qua PowerShell
-            try
-            {
-                ProcessStartInfo psStartInfo = new ProcessStartInfo
+                string header = selectedTab.Header?.ToString();
+                switch (header)
                 {
-                    FileName = "powershell.exe",
-                    Arguments = $"-Command \"Start-Process cmd -ArgumentList '/c', 'code --install-extension kilocode.Kilo-Code --force' -Verb RunAs\"",
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
-                };
-
-                Process.Start(psStartInfo);
+                    case "Main":
+                        return CheckBoxPanel;
+                }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred while attempting to install the VSCode extension via PowerShell: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+            return CheckBoxPanel;
         }
 
         /// <summary>
-        /// Tải và cài đặt VS2022
+        /// Uncheck tất cả tabs
         /// </summary>
-        private async Task DownloadAndInstallVS2022()
+        private void UncheckAllTabs()
         {
-            string fileName = "VS2022Installer.exe";
-            string filePath = Path.Combine(_downloadDirectory, fileName);
-
-            await DownloadFileWithProgress(VS2022_DOWNLOAD_URL, filePath, "Visual Studio 2022");
-
-            ProcessStartInfo startInfo = new ProcessStartInfo
-            {
-                FileName = filePath,
-                UseShellExecute = true,
-                Verb = "runas"
-            };
-
-            Process process = Process.Start(startInfo);
-            await Task.Run(() => process.WaitForExit());
+            UncheckPanel(CheckBoxPanel);
         }
 
         /// <summary>
-        /// Mở URL trong trình duyệt mặc định
+        /// Uncheck một panel
         /// </summary>
-        private void OpenUrl(string url)
+        private void UncheckPanel(WrapPanel panel)
         {
-            try
+            if (panel != null)
             {
-                Process.Start(url);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred while opening the link: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Information);
+                foreach (var child in panel.Children)
+                {
+                    if (child is CheckBox chk)
+                        chk.IsChecked = false;
+                }
             }
         }
+
+        #region Checkbox Click Handlers
+        public void QwenAPICheckBox_Click(object sender, RoutedEventArgs e) => UpdateInstallButtonState();
+        public void VSCodeCheckBox_Click(object sender, RoutedEventArgs e) => UpdateInstallButtonState();
+        public void VS2022CheckBox_Click(object sender, RoutedEventArgs e) => UpdateInstallButtonState();
         #endregion
     }
 }

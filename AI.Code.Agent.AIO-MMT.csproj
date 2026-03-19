@@ -41,6 +41,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -77,7 +78,13 @@
     <Compile Include="MainWindow.SystemButtons.cs">
       <DependentUpon>MainWindow.xaml.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainWindow.SystemDPI.cs">
+      <DependentUpon>MainWindow.xaml.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.SystemInstallDefault.cs">
+      <DependentUpon>MainWindow.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.SystemTempFolder.cs">
       <DependentUpon>MainWindow.xaml.cs</DependentUpon>
     </Compile>
   </ItemGroup>

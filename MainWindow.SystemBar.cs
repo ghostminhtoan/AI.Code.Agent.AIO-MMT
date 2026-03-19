@@ -15,10 +15,10 @@ namespace AI.Code.Agent.AIO_MMT
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                if (StatusBarTextBlock != null)
+                if (ProgressTextBlock != null)
                 {
-                    StatusBarTextBlock.Text = message;
-                    StatusBarTextBlock.Foreground = new SolidColorBrush(GetColorFromName(colorName));
+                    ProgressTextBlock.Text = message;
+                    ProgressTextBlock.Foreground = new SolidColorBrush(GetColorFromName(colorName));
                 }
             }));
         }

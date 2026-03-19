@@ -92,5 +92,110 @@ namespace AI.Code.Agent.AIO_MMT
                     SpeedTextBlock.Text = $"{speed:F1} KB/s";
             }));
         }
+
+        #region Download and Install Methods
+        /// <summary>
+        /// Tải và cài đặt Qwen To API
+        /// </summary>
+        protected async Task DownloadAndInstallQwenToAPI()
+        {
+            string fileName = "Qwen.to.API.exe";
+            string filePath = Path.Combine(_downloadDirectory, fileName);
+
+            await DownloadFileWithProgress(QWEN_TO_API_DOWNLOAD_URL, filePath, "AI Code Agent AIO - MMT");
+
+            var startInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = filePath,
+                Arguments = QWEN_TO_API_INSTALL_ARGUMENTS,
+                UseShellExecute = true,
+                Verb = "runas"
+            };
+
+            var process = System.Diagnostics.Process.Start(startInfo);
+            await Task.Run(() => process.WaitForExit());
+
+            // Mở các link
+            OpenUrl("https://chromewebstore.google.com/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm");
+            OpenUrl("https://www.morphllm.com/");
+            OpenUrl("https://chat.qwen.ai/");
+        }
+
+        /// <summary>
+        /// Tải và cài đặt VSCode
+        /// </summary>
+        protected async Task DownloadAndInstallVSCode()
+        {
+            string fileName = "VSCodeUserSetup-x64-1.105.1.exe";
+            string filePath = Path.Combine(_downloadDirectory, fileName);
+
+            await DownloadFileWithProgress(VSCode_DOWNLOAD_URL, filePath, "Visual Studio Code");
+
+            var startInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = filePath,
+                Arguments = VSCode_INSTALL_ARGUMENTS,
+                UseShellExecute = true,
+            };
+
+            var process = System.Diagnostics.Process.Start(startInfo);
+            await Task.Run(() => process.WaitForExit());
+
+            // Cài extension qua PowerShell
+            try
+            {
+                var psStartInfo = new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = "powershell.exe",
+                    Arguments = $"-Command \"Start-Process cmd -ArgumentList '/c', 'code --install-extension kilocode.Kilo-Code --force' -Verb RunAs\"",
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
+                };
+
+                System.Diagnostics.Process.Start(psStartInfo);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while attempting to install the VSCode extension via PowerShell: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        /// <summary>
+        /// Tải và cài đặt VS2022
+        /// </summary>
+        protected async Task DownloadAndInstallVS2022()
+        {
+            string fileName = "VS2022Installer.exe";
+            string filePath = Path.Combine(_downloadDirectory, fileName);
+
+            await DownloadFileWithProgress(VS2022_DOWNLOAD_URL, filePath, "Visual Studio 2022");
+
+            var startInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = filePath,
+                UseShellExecute = true,
+                Verb = "runas"
+            };
+
+            var process = System.Diagnostics.Process.Start(startInfo);
+            await Task.Run(() => process.WaitForExit());
+        }
+
+        /// <summary>
+        /// Mở URL trong trình duyệt mặc định
+        /// </summary>
+        protected void OpenUrl(string url)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(url);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while opening the link: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+        #endregion
     }
 }
