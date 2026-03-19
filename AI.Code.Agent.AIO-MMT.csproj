@@ -69,6 +69,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BuildInfo.cs" />
     <Compile Include="MainWindow.SystemArguments.cs">
       <DependentUpon>MainWindow.xaml.cs</DependentUpon>
     </Compile>

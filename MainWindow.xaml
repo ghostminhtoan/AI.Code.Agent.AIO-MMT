@@ -167,7 +167,7 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Margin="0,0,20,0">
                     <TextBlock Text="AI Code Agent AIO - MMT"
-                                FontSize="22"
+                                FontSize="13"
                                 FontWeight="Bold"
                                 Foreground="Yellow"
                                 Margin="0,0,10,5" Height="29" Width="164"/>
@@ -269,9 +269,9 @@
                 <TabItem Header="Main">
                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Background="#FF1F1F1F">
                         <WrapPanel x:Name="CheckBoxPanel" Orientation="Horizontal" HorizontalAlignment="Stretch" Style="{StaticResource ResponsiveWrapPanelStyle}">
-                            <CheckBox x:Name="QwenAPICheckBox" Content="1. AI Code Agent AIO - MMT" Width="200" Height="34" Click="QwenAPICheckBox_Click" Margin="2" MouseEnter="Checkbox_MouseEnter"/>
-                            <CheckBox x:Name="VSCodeCheckBox" Content="2. Visual Studio Code" Width="200" Height="34" Click="VSCodeCheckBox_Click" Margin="2" MouseEnter="Checkbox_MouseEnter"/>
-                            <CheckBox x:Name="VS2022CheckBox" Content="3. Visual Studio 2022" Width="200" Height="34" Click="VS2022CheckBox_Click" Margin="2" MouseEnter="Checkbox_MouseEnter"/>
+                            <CheckBox x:Name="QwenAPICheckBox" Content="QwenToAPI" Width="200" Height="34" Click="QwenAPICheckBox_Click" Margin="2" MouseEnter="Checkbox_MouseEnter"/>
+                            <CheckBox x:Name="VSCodeCheckBox" Content="Visual Studio Code" Width="200" Height="34" Click="VSCodeCheckBox_Click" Margin="2" MouseEnter="Checkbox_MouseEnter"/>
+                            <CheckBox x:Name="VS2022CheckBox" Content="Visual Studio 2022" Width="200" Height="34" Click="VS2022CheckBox_Click" Margin="2" MouseEnter="Checkbox_MouseEnter"/>
                         </WrapPanel>
                     </ScrollViewer>
                 </TabItem>

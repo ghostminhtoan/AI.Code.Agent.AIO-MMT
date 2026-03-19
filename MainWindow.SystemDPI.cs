@@ -70,8 +70,25 @@ namespace AI.Code.Agent.AIO_MMT
             // Populate temp folder
             PopulateTempFolderComboBox();
             
+            // Set build number
+            SetBuildNumber();
+            
             // Set default scale
             ApplyDpiScale(1.0);
+        }
+
+        /// <summary>
+        /// Set Build Number display
+        /// </summary>
+        private void SetBuildNumber()
+        {
+            Dispatcher.InvokeAsync(() =>
+            {
+                if (BuildNumberTextBlock != null)
+                {
+                    BuildNumberTextBlock.Text = $"Build: {BuildInfo.BUILD_NUMBER}";
+                }
+            });
         }
 
         /// <summary>
