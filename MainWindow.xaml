@@ -17,12 +17,12 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Border x:Name="checkBoxBorder" 
+                            <Border x:Name="checkBoxBorder"
                                     Grid.Column="0"
-                                    Width="20" 
-                                    Height="20" 
+                                    Width="20"
+                                    Height="20"
                                     Background="{TemplateBinding Background}"
-                                    BorderBrush="#FF7A7A7A" 
+                                    BorderBrush="#FF7A7A7A"
                                     BorderThickness="1.5"
                                     CornerRadius="5"
                                     Margin="0,0,8,0">
@@ -66,12 +66,12 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="border" 
+                        <Border x:Name="border"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="4">
-                            <ContentPresenter x:Name="contentPresenter" 
+                            <ContentPresenter x:Name="contentPresenter"
                                               HorizontalAlignment="Center"
                                               VerticalAlignment="Center"
                                               Margin="{TemplateBinding Padding}"/>
@@ -96,11 +96,11 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="ProgressBar">
                         <Grid>
-                            <Border x:Name="PART_Track" 
-                                    Background="{TemplateBinding Background}" 
+                            <Border x:Name="PART_Track"
+                                    Background="{TemplateBinding Background}"
                                     CornerRadius="4"/>
-                            <Border x:Name="PART_Indicator" 
-                                    Background="{TemplateBinding Foreground}" 
+                            <Border x:Name="PART_Indicator"
+                                    Background="{TemplateBinding Foreground}"
                                     HorizontalAlignment="Left"
                                     CornerRadius="4"/>
                         </Grid>
@@ -115,6 +115,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <!-- Header Section -->
         <Border Grid.Row="0" Background="#FF1F1F1F" CornerRadius="6" Padding="15" Margin="0,0,0,15">
@@ -124,8 +125,8 @@
                            FontWeight="Bold"
                            Foreground="#FFFFFFFF"
                            Margin="0,0,0,5"/>
-                <TextBlock Text="Tác giả: Ma Minh Toàn 1993" 
-                           FontSize="14" 
+                <TextBlock Text="Tác giả: Ma Minh Toàn 1993"
+                           FontSize="14"
                            Foreground="#FFCCCCCC"/>
             </StackPanel>
         </Border>
@@ -133,9 +134,9 @@
         <Border Grid.Row="1" Background="#FF1F1F1F" CornerRadius="6" Padding="15" Margin="0,0,0,15">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <WrapPanel x:Name="CheckBoxPanel" Orientation="Horizontal" HorizontalAlignment="Stretch">
-                    <CheckBox x:Name="QwenAPICheckBox" Content="1. AI Code Agent AIO - MMT" Width="280" Height="30" IsChecked="True"/>
-                    <CheckBox x:Name="VSCodeCheckBox" Content="2. Visual Studio Code" Width="280" Height="30" IsChecked="True"/>
-                    <CheckBox x:Name="VS2022CheckBox" Content="3. Visual Studio 2022" Width="280" Height="30" IsChecked="True"/>
+                    <CheckBox x:Name="QwenAPICheckBox" Content="1. AI Code Agent AIO - MMT" Width="280" Height="30" IsChecked="True" MouseEnter="Checkbox_MouseEnter"/>
+                    <CheckBox x:Name="VSCodeCheckBox" Content="2. Visual Studio Code" Width="280" Height="30" IsChecked="True" MouseEnter="Checkbox_MouseEnter"/>
+                    <CheckBox x:Name="VS2022CheckBox" Content="3. Visual Studio 2022" Width="280" Height="30" IsChecked="True" MouseEnter="Checkbox_MouseEnter"/>
                 </WrapPanel>
             </ScrollViewer>
         </Border>
@@ -147,34 +148,43 @@
                 <Button x:Name="InstallButton" Content="Install" Width="120" Background="#FF005FB8" BorderBrush="#FF005FB8" Click="InstallButton_Click"/>
             </StackPanel>
         </Border>
-        
+
         <!-- Progress Bar Section -->
         <Border Grid.Row="3" Background="#FF1F1F1F" CornerRadius="6" Padding="15" Margin="0,0,0,15">
             <StackPanel>
-                <ProgressBar x:Name="DownloadProgressBar" 
-                             Height="8" 
+                <ProgressBar x:Name="DownloadProgressBar"
+                             Height="8"
                              Margin="0,0,0,10"
                              Style="{StaticResource RoundedProgressBarStyle}"
                              Background="#FF2D2D30"
                              Foreground="#FF005FB8"
                              BorderThickness="0"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock x:Name="ProgressTextBlock" 
-                               Text="0%" 
-                               FontSize="12" 
-                               Foreground="#FFD0D0D4" 
+                    <TextBlock x:Name="ProgressTextBlock"
+                               Text="0%"
+                               FontSize="12"
+                               Foreground="#FFD0D0D4"
                                Margin="0,0,20,0"/>
-                    <TextBlock x:Name="SpeedTextBlock" 
-                               Text="0 KB/s" 
-                               FontSize="12" 
+                    <TextBlock x:Name="SpeedTextBlock"
+                               Text="0 KB/s"
+                               FontSize="12"
                                Foreground="#FFD0D0D4"/>
                 </StackPanel>
             </StackPanel>
         </Border>
-        
+
+        <!-- Status Bar Section -->
+        <Border Grid.Row="4" Background="#FF1F1F1F" CornerRadius="6" Padding="10" Margin="0,0,0,10">
+            <TextBlock x:Name="StatusBarTextBlock"
+                       Text="Sẵn sàng cài đặt"
+                       FontSize="12"
+                       Foreground="#FFD0D0D4"
+                       VerticalAlignment="Center"/>
+        </Border>
+
         <!-- Donate Button -->
-        <Button Grid.Row="4" x:Name="SupportButton" Content="Ủng hộ tác giả" 
-                HorizontalAlignment="Right" Width="130" 
+        <Button Grid.Row="5" x:Name="SupportButton" Content="Ủng hộ tác giả"
+                HorizontalAlignment="Right" Width="130"
                 Background="#FF107C10" BorderBrush="#FF107C10"
                 Click="SupportButton_Click" Margin="0,0,0,10"/>
     </Grid>

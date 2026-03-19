@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../GMTPC.Tool - Copy"
+		}
+	],
+	"settings": {
+		"dotnet.preferCSharpExtension": true
+	}
+}

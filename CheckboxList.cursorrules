@@ -1,0 +1,30 @@
+# Checkbox List - AI Code Agent AIO - MMT
+
+Danh sách các checkbox trong ứng dụng, được sử dụng để tham khảo khi tạo hoặc chỉnh sửa checkbox.
+
+## Tab: Main (MainWindow)
+
+| Checkbox Name | Display Name | Download URL | Install Arguments | Notes |
+|---------------|--------------|--------------|-------------------|-------|
+| QwenAPICheckBox | 1. AI Code Agent AIO - MMT | https://github.com/ghostminhtoan/MMT/releases/download/Qwen_to_API/Qwen.to.API.exe | /s | Opens 3 URLs after install |
+| VSCodeCheckBox | 2. Visual Studio Code | https://vscode.download.prss.microsoft.com/dbazure/download/stable/7d842fb85a0275a4a8e4d7e040d2625abbf7f084/VSCodeUserSetup-x64-1.105.1.exe | /silent | Installs Kilo-Code extension |
+| VS2022CheckBox | 3. Visual Studio 2022 | https://c2rsetup.officeapps.live.com/c2r/downloadVS.aspx?sku=community&channel=Release&version=VS2022&source=VSLandingPage&cid=2030:7fd6333476b84b559fcb67bb623abf8b | (none) | Community Edition |
+
+## File Architecture
+
+- `MainWindow.xaml.cs` - Partial class chính (chỉ chứa constructor)
+- `MainWindow.SystemArguments.cs` - Khai báo URL constants và download logic
+- `MainWindow.SystemBar.cs` - Xử lý StatusBar và Progress
+- `MainWindow.SystemButtons.cs` - Xử lý Button events và checkbox hover
+- `MainWindow.SystemInstallDefault.cs` - Cơ chế cài đặt cơ bản
+
+## Workflows
+
+### Workflow_createcheckbox
+Dùng để tạo checkbox mới theo quy chuẩn.
+
+### Workflow_editcheckbox
+Dùng để chỉnh sửa checkbox đã tồn tại.
+
+### Workflow_createcheckbox_multipart
+Dùng cho game nhiều parts (multi-part installer).
