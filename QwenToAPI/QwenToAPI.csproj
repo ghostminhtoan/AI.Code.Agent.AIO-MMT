@@ -7,7 +7,7 @@
     <ProjectGuid>{BB4C0CAE-AF56-4337-8087-6E308431A388}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>QwenToAPI</RootNamespace>
-    <AssemblyName>QwenToAPI</AssemblyName>
+    <AssemblyName>AI.Code.Agent.AIO-MMT</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <FileAlignment>512</FileAlignment>
